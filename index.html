@@ -9,64 +9,95 @@
   <style>
     body {
       font-family: 'Arial', sans-serif;
-      background-color: #f4f7f6;
+      background-color: #f0f0f0;
       margin: 0;
       padding: 0;
       color: #333;
+      overflow-x: hidden;
     }
+
     .container {
-      width: 80%;
+      width: 85%;
       margin: 0 auto;
-      padding: 20px;
+      padding: 40px 20px;
     }
+
     h1, h2 {
       color: #3D41FA;
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      animation: fadeIn 1s ease-out;
     }
+
     h3 {
       color: #EEFF41;
     }
+
     .section {
-      margin: 20px 0;
+      margin-bottom: 40px;
       padding: 20px;
       background-color: #fff;
-      border-radius: 8px;
-      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+      animation: fadeIn 1.5s ease-out;
     }
+
     table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 15px;
     }
+
     th, td {
-      padding: 10px;
+      padding: 12px 18px;
       text-align: left;
       border-bottom: 1px solid #ddd;
     }
+
     th {
       background-color: #3D41FA;
       color: white;
     }
+
     td {
       background-color: #f9f9f9;
     }
+
+    input, select {
+      padding: 10px;
+      margin: 5px 0;
+      width: 100%;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
     .button {
-      padding: 10px 20px;
+      padding: 12px 25px;
       background-color: #EEFF41;
       color: black;
       text-decoration: none;
       border-radius: 5px;
       font-weight: bold;
       display: inline-block;
-      margin-top: 10px;
+      transition: background-color 0.3s ease;
+      text-align: center;
     }
+
     .button:hover {
       background-color: #3D41FA;
       color: white;
     }
-    input, select {
-      padding: 8px;
-      margin: 5px 0;
-      width: 100%;
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
   </style>
 </head>
@@ -78,14 +109,14 @@
     <div class="section">
       <h2>✈️ Trip Overview</h2>
       <label for="destination">Destination:</label>
-      <input type="text" id="destination" placeholder="Meghalaya + Assam">
+      <input type="text" id="destination" value="Meghalaya + Assam">
       <label for="dates">Dates:</label>
-      <input type="text" id="dates" placeholder="17-24 Sept 2025">
+      <input type="text" id="dates" value="17-24 Sept 2025">
       <label for="travelers">Number of Travelers:</label>
-      <input type="number" id="travelers" placeholder="2" min="1">
+      <input type="number" id="travelers" value="2">
       <label for="budget">Budget Estimate (₹):</label>
-      <input type="text" id="budget" placeholder="₹85,000 - ₹1,25,000">
-      <button onclick="saveTripInfo()">Save Trip Info</button>
+      <input type="text" id="budget" value="₹85,000 - ₹1,25,000">
+      <button class="button" onclick="saveTripInfo()">Save Trip Info</button>
     </div>
 
     <div class="section">
@@ -118,10 +149,10 @@
             <td><input type="text" value="₹3,500"></td>
             <td><input type="text" value="First day settling in"></td>
           </tr>
-          <!-- Add more rows as needed -->
+          <!-- Add more rows here -->
         </tbody>
       </table>
-      <button onclick="addNewDay()">Add New Day</button>
+      <button class="button" onclick="addNewDay()">Add New Day</button>
     </div>
 
     <div class="section">
@@ -133,7 +164,7 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
-  
+
   <script>
     function saveTripInfo() {
       let destination = document.getElementById("destination").value;

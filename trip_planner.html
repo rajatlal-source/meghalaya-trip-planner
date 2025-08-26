@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Meghalaya Trip Planner</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f7f6;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    .container {
+      width: 80%;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    h1, h2 {
+      color: #3D41FA;
+    }
+    h3 {
+      color: #EEFF41;
+    }
+    .section {
+      margin: 20px 0;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background-color: #3D41FA;
+      color: white;
+    }
+    td {
+      background-color: #f9f9f9;
+    }
+    .button {
+      padding: 10px 20px;
+      background-color: #EEFF41;
+      color: black;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+      display: inline-block;
+      margin-top: 10px;
+    }
+    .button:hover {
+      background-color: #3D41FA;
+      color: white;
+    }
+    input, select {
+      padding: 8px;
+      margin: 5px 0;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>🌍 Meghalaya Trip Planner</h1>
+
+    <div class="section">
+      <h2>✈️ Trip Overview</h2>
+      <label for="destination">Destination:</label>
+      <input type="text" id="destination" placeholder="Meghalaya + Assam">
+      <label for="dates">Dates:</label>
+      <input type="text" id="dates" placeholder="17-24 Sept 2025">
+      <label for="travelers">Number of Travelers:</label>
+      <input type="number" id="travelers" placeholder="2" min="1">
+      <label for="budget">Budget Estimate (₹):</label>
+      <input type="text" id="budget" placeholder="₹85,000 - ₹1,25,000">
+      <button onclick="saveTripInfo()">Save Trip Info</button>
+    </div>
+
+    <div class="section">
+      <h2>🗓️ Day-by-Day Itinerary</h2>
+      <table id="itineraryTable">
+        <thead>
+          <tr>
+            <th>Day</th>
+            <th>Date</th>
+            <th>Location</th>
+            <th>Morning Activity</th>
+            <th>Afternoon Activity</th>
+            <th>Evening Activity</th>
+            <th>Accommodation</th>
+            <th>Transport</th>
+            <th>Estimated Cost</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Day 1</td>
+            <td>Wed, 17 Sep</td>
+            <td>Guwahati → Shillong</td>
+            <td><input type="text" value="Flight arrival GAU"></td>
+            <td><input type="text" value="Drive to Shillong via Umiam"></td>
+            <td><input type="text" value="Ward's Lake & Police Bazar"></td>
+            <td><input type="text" value="Choose from Hotels sheet"></td>
+            <td><input type="text" value="GAU-Shillong cab"></td>
+            <td><input type="text" value="₹3,500"></td>
+            <td><input type="text" value="First day settling in"></td>
+          </tr>
+          <!-- Add more rows as needed -->
+        </tbody>
+      </table>
+      <button onclick="addNewDay()">Add New Day</button>
+    </div>
+
+    <div class="section">
+      <h2>📥 Download & Export</h2>
+      <button class="button" onclick="generatePDF()">Download PDF</button>
+      <button class="button" onclick="generateExcel()">Download Excel</button>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
+  
+  <script>
+    function saveTripInfo() {
+      let destination = document.getElementById("destination").value;
+      let dates = document.getElementById("dates").value;
+      let travelers = document.getElementById("travelers").value;
+      let budget = document.getElementById("budget").value;
+
+      // Store in localStorage
+      localStorage.setItem("destination", destination);
+      localStorage.setItem("dates", dates);
+      localStorage.setItem("travelers", travelers);
+      localStorage.setItem("budget", budget);
+
+      alert("Trip info saved!");
+    }
+
+    function addNewDay() {
+      const table = document.getElementById("itineraryTable").getElementsByTagName('tbody')[0];
+      const newRow = table.insertRow();
+      newRow.innerHTML = `
+        <td>Day ${table.rows.length + 1}</td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+      `;
+    }
+
+    function generatePDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+
+      doc.text("Meghalaya Trip Planner", 10, 10);
+      doc.text("Destination: " + localStorage.getItem("destination"), 10, 20);
+      doc.text("Dates: " + localStorage.getItem("dates"), 10, 30);
+      doc.text("Travelers: " + localStorage.getItem("travelers"), 10, 40);
+      doc.text("Budget Estimate: " + localStorage.getItem("budget"), 10, 50);
+
+      // Adding table
+      const rows = [];
+      const table = document.getElementById("itineraryTable").getElementsByTagName('tbody')[0];
+      for (let i = 0; i < table.rows.length; i++) {
+        const row = table.rows[i];
+        const rowData = [];
+        for (let j = 0; j < row.cells.length; j++) {
+          rowData.push(row.cells[j].children[0].value);
+        }
+        rows.push(rowData);
+      }
+
+      doc.autoTable({
+        head: [["Day", "Date", "Location", "Morning Activity", "Afternoon Activity", "Evening Activity", "Accommodation", "Transport", "Estimated Cost", "Notes"]],
+        body: rows,
+      });
+
+      doc.save('Meghalaya_Trip_Plan.pdf');
+    }
+
+    function generateExcel() {
+      const table = document.getElementById("itineraryTable");
+      const wb = XLSX.utils.table_to_book(table, { sheet: "Itinerary" });
+      XLSX.writeFile(wb, 'Meghalaya_Trip_Plan.xlsx');
+    }
+  </script>
+</body>
+</html>
